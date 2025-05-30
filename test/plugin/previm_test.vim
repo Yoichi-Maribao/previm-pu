@@ -44,3 +44,25 @@ function! s:t.valid_filetype()
   endfor
 endfunction
 
+function! s:t.test_filetype_pu()
+  let filename = 'test.pu'
+  let lines = [
+        \ '@startuml',
+        \ 'Alice -> Bob: hello',
+        \ '@enduml'
+        \ ]
+  let actual = previm#convert_to_content(lines)
+  Assert match(actual, '```plantuml') != -1
+endfunction
+
+function! s:t.test_filetype_pu_without_tags()
+  let filename = 'test.pu'
+  let lines = [
+        \ 'Alice -> Bob: hello'
+        \ ]
+  let actual = previm#convert_to_content(lines)
+  Assert match(actual, '@startuml') != -1
+  Assert match(actual, '@enduml') != -1
+  Assert match(actual, 'Alice -> Bob: hello') != -1
+endfunction
+

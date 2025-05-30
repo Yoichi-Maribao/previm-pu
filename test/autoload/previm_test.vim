@@ -225,4 +225,17 @@ function! s:t.empty_if_not_exists_file()
   call s:assert.equals(actual, [])
 endfunction
 "}}}
+
+function! s:suite.test_has_plantuml_filetype()
+  let types = ['plantuml', 'pu']
+  for type in types
+    call s:assert_filetype(type, type)
+  endfor
+endfunction
+
+function! s:assert_filetype(type, expected)
+  let actual = previm#make_preview_file_path('test.' . a:type)
+  Assert match(actual, a:expected) != -1
+endfunction
+
 "
